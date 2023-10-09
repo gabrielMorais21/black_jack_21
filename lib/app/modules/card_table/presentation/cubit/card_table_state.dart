@@ -23,10 +23,27 @@ class CardTableSuccessState extends CardTableState {
 
 class DrawCardSuccessState extends CardTableState {
   final CardModel cardModel;
-  DrawCardSuccessState({required this.cardModel});
+  final bool isCpu;
+  DrawCardSuccessState({required this.cardModel, required this.isCpu});
 
   @override
   List<Object> get props => [cardModel];
+}
+
+class ReshuffleCardsSuccessState extends CardTableState {
+  final String deckId;
+  ReshuffleCardsSuccessState({required this.deckId});
+
+  @override
+  List<Object> get props => [deckId];
+}
+
+class ShuffleCardsSuccessState extends CardTableState {
+  final String deckId;
+  ShuffleCardsSuccessState({required this.deckId});
+
+  @override
+  List<Object> get props => [deckId];
 }
 
 class CardTableErrorState extends CardTableState {

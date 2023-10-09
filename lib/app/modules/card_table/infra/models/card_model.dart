@@ -1,6 +1,6 @@
 class CardModel {
   String? deckId;
-  List<Card>? cards;
+  List<Cards>? cards;
   int? remaining;
 
   CardModel({this.deckId, this.cards, this.remaining});
@@ -8,9 +8,9 @@ class CardModel {
   CardModel.fromJson(Map<String, dynamic> json) {
     deckId = json['deck_id'];
     if (json['cards'] != null) {
-      cards = <Card>[];
+      cards = <Cards>[];
       json['cards'].forEach((v) {
-        cards!.add(Card.fromJson(v));
+        cards!.add(Cards.fromJson(v));
       });
     }
     remaining = json['remaining'];
@@ -27,16 +27,16 @@ class CardModel {
   }
 }
 
-class Card {
+class Cards {
   String? code;
   String? image;
   Images? images;
   String? value;
   String? suit;
 
-  Card({this.code, this.image, this.images, this.value, this.suit});
+  Cards({this.code, this.image, this.images, this.value, this.suit});
 
-  Card.fromJson(Map<String, dynamic> json) {
+  Cards.fromJson(Map<String, dynamic> json) {
     code = json['code'];
     image = json['image'];
     images = json['images'] != null ? Images.fromJson(json['images']) : null;

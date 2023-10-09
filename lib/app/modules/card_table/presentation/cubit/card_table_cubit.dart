@@ -29,7 +29,7 @@ class CardTableCubit extends Cubit<CardTableState> {
     emit(CardTableSuccessState());
   }
 
-  Future<void> fetchCard({required String count, required String deckId}) async {
+  Future<void> fetchCard({required String count, required String deckId, required bool isCpu}) async {
     try {
       emit(CardTableLoadingState());
       final result = await drawCard(count: count, deckId: deckId);
@@ -37,23 +37,7 @@ class CardTableCubit extends Cubit<CardTableState> {
         emit(CardTableErrorState(l));
         return;
       }, (r) async {
-        emit(DrawCardSuccessState(cardModel: r));
-      });
-    } catch (e) {
-      emit(CardTableErrorState(CardTableUnkownError(message: e.toString())));
-    }
-  }
-
-  Future<void> fetchNewDeck() async {
-    try {
-      emit(CardTableLoadingState());
-      final result = await newDeck();
-      result.fold((l) {
-        emit(CardTableErrorState(l));
-        return;
-      }, (r) async {
-        deckId =  r.deckId  ?? "";
-    
+        emit(DrawCardSuccessState(cardModel: r, isCpu: isCpu));
       });
     } catch (e) {
       emit(CardTableErrorState(CardTableUnkownError(message: e.toString())));
@@ -66,24 +50,22 @@ class CardTableCubit extends Cubit<CardTableState> {
       final result = await reshuffleCards(deckId: deckId);
       result.fold((l) {
         emit(CardTableErrorState(l));
-        return;
       }, (r) async {
-        return;
+        emit(ReshuffleCardsSuccessState(deckId: r.deckId ?? ""));
       });
     } catch (e) {
       emit(CardTableErrorState(CardTableUnkownError(message: e.toString())));
     }
   }
 
-  Future<void> fetchShuffleCards({required String deckId}) async {
+  Future<void> fetchShuffleCards({required String deckCount}) async {
     try {
       emit(CardTableLoadingState());
-      final result = await shuffleCards(deckId: deckId);
+      final result = await shuffleCards(deckCount: deckCount);
       result.fold((l) {
         emit(CardTableErrorState(l));
-        return;
       }, (r) async {
-        return;
+        emit(ShuffleCardsSuccessState(deckId: r.deckId ?? ""));
       });
     } catch (e) {
       emit(CardTableErrorState(CardTableUnkownError(message: e.toString())));

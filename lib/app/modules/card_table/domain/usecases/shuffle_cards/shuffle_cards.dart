@@ -3,5 +3,5 @@ import 'package:black_jack_21/app/modules/card_table/infra/models/deck_model.dar
 import 'package:dartz/dartz.dart';
 
 abstract class ShuffleCards {
-  Future<Either<CardTableFailure, DeckModel>> call({required String deckId});
+  Future<Either<CardTableFailure, DeckModel>> call({required String deckCount});
 }
