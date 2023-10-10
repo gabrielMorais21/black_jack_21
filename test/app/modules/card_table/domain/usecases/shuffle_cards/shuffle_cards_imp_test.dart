@@ -1,6 +1,5 @@
 import 'package:black_jack_21/app/core/mock/card_table_mock.dart';
 import 'package:black_jack_21/app/modules/card_table/domain/errors.dart';
-import 'package:black_jack_21/app/modules/card_table/domain/usecases/reshuffle_cards/reshuffle_cards_imp.dart';
 import 'package:black_jack_21/app/modules/card_table/domain/usecases/shuffle_cards/shuffle_cards_imp.dart';
 import 'package:black_jack_21/app/modules/card_table/infra/models/deck_model.dart';
 import 'package:black_jack_21/app/modules/card_table/infra/repository.dart';
@@ -8,6 +7,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import '../../../../../../mock/mock.mocks.dart';
+// ignore: library_prefixes
 import 'package:black_jack_21/injection_container.dart' as injectionContainer;
 
 void main() {

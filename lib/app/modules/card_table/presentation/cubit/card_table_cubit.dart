@@ -1,7 +1,9 @@
 import 'package:black_jack_21/app/modules/card_table/domain/errors.dart';
+import 'package:black_jack_21/app/modules/card_table/domain/usecases/calculate_score/calculate_score.dart';
 import 'package:black_jack_21/app/modules/card_table/domain/usecases/draw_card/draw_card.dart';
 import 'package:black_jack_21/app/modules/card_table/domain/usecases/reshuffle_cards/reshuffle_cards.dart';
 import 'package:black_jack_21/app/modules/card_table/domain/usecases/shuffle_cards/shuffle_cards.dart';
+import 'package:black_jack_21/app/modules/card_table/domain/usecases/validate_win/validate_win.dart';
 import 'package:black_jack_21/app/modules/card_table/presentation/cubit/card_table_state.dart';
 import 'package:bloc/bloc.dart';
 
@@ -9,6 +11,8 @@ class CardTableCubit extends Cubit<CardTableState> {
   final DrawCard drawCard;
   final ReshuffleCards reshuffleCards;
   final ShuffleCards shuffleCards;
+  final CalculateScore calculateScore;
+  final ValidateWin validateWin;
   String deckId = "";
 
   CardTableCubit({
@@ -16,6 +20,8 @@ class CardTableCubit extends Cubit<CardTableState> {
     required this.drawCard,
     required this.reshuffleCards,
     required this.shuffleCards,
+    required this.calculateScore,
+    required this.validateWin
   }) : super(initialState);
 
   void resetState() {

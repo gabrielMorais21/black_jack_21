@@ -3,33 +3,38 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i13;
+import 'dart:async' as _i15;
 
+import 'package:black_jack_21/app/common/enums/game_results_enum.dart' as _i22;
 import 'package:black_jack_21/app/modules/card_table/data/remote/remote_datasource.dart'
-    as _i21;
+    as _i24;
 import 'package:black_jack_21/app/modules/card_table/domain/errors.dart'
-    as _i17;
+    as _i19;
+import 'package:black_jack_21/app/modules/card_table/domain/usecases/calculate_score/calculate_score.dart'
+    as _i10;
 import 'package:black_jack_21/app/modules/card_table/domain/usecases/draw_card/draw_card.dart'
     as _i7;
 import 'package:black_jack_21/app/modules/card_table/domain/usecases/reshuffle_cards/reshuffle_cards.dart'
     as _i8;
 import 'package:black_jack_21/app/modules/card_table/domain/usecases/shuffle_cards/shuffle_cards.dart'
     as _i9;
+import 'package:black_jack_21/app/modules/card_table/domain/usecases/validate_win/validate_win.dart'
+    as _i11;
 import 'package:black_jack_21/app/modules/card_table/infra/models/card_model.dart'
-    as _i18;
-import 'package:black_jack_21/app/modules/card_table/infra/models/deck_model.dart'
-    as _i19;
-import 'package:black_jack_21/app/modules/card_table/infra/repository.dart'
     as _i20;
+import 'package:black_jack_21/app/modules/card_table/infra/models/deck_model.dart'
+    as _i21;
+import 'package:black_jack_21/app/modules/card_table/infra/repository.dart'
+    as _i23;
 import 'package:black_jack_21/app/modules/card_table/presentation/cubit/card_table_cubit.dart'
-    as _i15;
+    as _i17;
 import 'package:black_jack_21/app/modules/card_table/presentation/cubit/card_table_state.dart'
-    as _i10;
-import 'package:bloc/bloc.dart' as _i16;
-import 'package:dartz/dartz.dart' as _i11;
+    as _i12;
+import 'package:bloc/bloc.dart' as _i18;
+import 'package:dartz/dartz.dart' as _i13;
 import 'package:dio/src/adapter.dart' as _i3;
-import 'package:dio/src/cancel_token.dart' as _i14;
-import 'package:dio/src/dio.dart' as _i12;
+import 'package:dio/src/cancel_token.dart' as _i16;
+import 'package:dio/src/dio.dart' as _i14;
 import 'package:dio/src/dio_mixin.dart' as _i5;
 import 'package:dio/src/options.dart' as _i2;
 import 'package:dio/src/response.dart' as _i6;
@@ -129,9 +134,9 @@ class _FakeShuffleCards_7 extends _i1.SmartFake implements _i9.ShuffleCards {
         );
 }
 
-class _FakeCardTableState_8 extends _i1.SmartFake
-    implements _i10.CardTableState {
-  _FakeCardTableState_8(
+class _FakeCalculateScore_8 extends _i1.SmartFake
+    implements _i10.CalculateScore {
+  _FakeCalculateScore_8(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -140,8 +145,29 @@ class _FakeCardTableState_8 extends _i1.SmartFake
         );
 }
 
-class _FakeEither_9<L, R> extends _i1.SmartFake implements _i11.Either<L, R> {
-  _FakeEither_9(
+class _FakeValidateWin_9 extends _i1.SmartFake implements _i11.ValidateWin {
+  _FakeValidateWin_9(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakeCardTableState_10 extends _i1.SmartFake
+    implements _i12.CardTableState {
+  _FakeCardTableState_10(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakeEither_11<L, R> extends _i1.SmartFake implements _i13.Either<L, R> {
+  _FakeEither_11(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -153,7 +179,7 @@ class _FakeEither_9<L, R> extends _i1.SmartFake implements _i11.Either<L, R> {
 /// A class which mocks [Dio].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockDio extends _i1.Mock implements _i12.Dio {
+class MockDio extends _i1.Mock implements _i14.Dio {
   MockDio() {
     _i1.throwOnMissingStub(this);
   }
@@ -233,12 +259,12 @@ class MockDio extends _i1.Mock implements _i12.Dio {
       );
 
   @override
-  _i13.Future<_i6.Response<T>> head<T>(
+  _i15.Future<_i6.Response<T>> head<T>(
     String? path, {
     Object? data,
     Map<String, dynamic>? queryParameters,
     _i2.Options? options,
-    _i14.CancelToken? cancelToken,
+    _i16.CancelToken? cancelToken,
   }) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -251,7 +277,7 @@ class MockDio extends _i1.Mock implements _i12.Dio {
             #cancelToken: cancelToken,
           },
         ),
-        returnValue: _i13.Future<_i6.Response<T>>.value(_FakeResponse_4<T>(
+        returnValue: _i15.Future<_i6.Response<T>>.value(_FakeResponse_4<T>(
           this,
           Invocation.method(
             #head,
@@ -264,14 +290,14 @@ class MockDio extends _i1.Mock implements _i12.Dio {
             },
           ),
         )),
-      ) as _i13.Future<_i6.Response<T>>);
+      ) as _i15.Future<_i6.Response<T>>);
 
   @override
-  _i13.Future<_i6.Response<T>> headUri<T>(
+  _i15.Future<_i6.Response<T>> headUri<T>(
     Uri? uri, {
     Object? data,
     _i2.Options? options,
-    _i14.CancelToken? cancelToken,
+    _i16.CancelToken? cancelToken,
   }) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -283,7 +309,7 @@ class MockDio extends _i1.Mock implements _i12.Dio {
             #cancelToken: cancelToken,
           },
         ),
-        returnValue: _i13.Future<_i6.Response<T>>.value(_FakeResponse_4<T>(
+        returnValue: _i15.Future<_i6.Response<T>>.value(_FakeResponse_4<T>(
           this,
           Invocation.method(
             #headUri,
@@ -295,15 +321,15 @@ class MockDio extends _i1.Mock implements _i12.Dio {
             },
           ),
         )),
-      ) as _i13.Future<_i6.Response<T>>);
+      ) as _i15.Future<_i6.Response<T>>);
 
   @override
-  _i13.Future<_i6.Response<T>> get<T>(
+  _i15.Future<_i6.Response<T>> get<T>(
     String? path, {
     Object? data,
     Map<String, dynamic>? queryParameters,
     _i2.Options? options,
-    _i14.CancelToken? cancelToken,
+    _i16.CancelToken? cancelToken,
     _i2.ProgressCallback? onReceiveProgress,
   }) =>
       (super.noSuchMethod(
@@ -318,7 +344,7 @@ class MockDio extends _i1.Mock implements _i12.Dio {
             #onReceiveProgress: onReceiveProgress,
           },
         ),
-        returnValue: _i13.Future<_i6.Response<T>>.value(_FakeResponse_4<T>(
+        returnValue: _i15.Future<_i6.Response<T>>.value(_FakeResponse_4<T>(
           this,
           Invocation.method(
             #get,
@@ -332,14 +358,14 @@ class MockDio extends _i1.Mock implements _i12.Dio {
             },
           ),
         )),
-      ) as _i13.Future<_i6.Response<T>>);
+      ) as _i15.Future<_i6.Response<T>>);
 
   @override
-  _i13.Future<_i6.Response<T>> getUri<T>(
+  _i15.Future<_i6.Response<T>> getUri<T>(
     Uri? uri, {
     Object? data,
     _i2.Options? options,
-    _i14.CancelToken? cancelToken,
+    _i16.CancelToken? cancelToken,
     _i2.ProgressCallback? onReceiveProgress,
   }) =>
       (super.noSuchMethod(
@@ -353,7 +379,7 @@ class MockDio extends _i1.Mock implements _i12.Dio {
             #onReceiveProgress: onReceiveProgress,
           },
         ),
-        returnValue: _i13.Future<_i6.Response<T>>.value(_FakeResponse_4<T>(
+        returnValue: _i15.Future<_i6.Response<T>>.value(_FakeResponse_4<T>(
           this,
           Invocation.method(
             #getUri,
@@ -366,15 +392,15 @@ class MockDio extends _i1.Mock implements _i12.Dio {
             },
           ),
         )),
-      ) as _i13.Future<_i6.Response<T>>);
+      ) as _i15.Future<_i6.Response<T>>);
 
   @override
-  _i13.Future<_i6.Response<T>> post<T>(
+  _i15.Future<_i6.Response<T>> post<T>(
     String? path, {
     Object? data,
     Map<String, dynamic>? queryParameters,
     _i2.Options? options,
-    _i14.CancelToken? cancelToken,
+    _i16.CancelToken? cancelToken,
     _i2.ProgressCallback? onSendProgress,
     _i2.ProgressCallback? onReceiveProgress,
   }) =>
@@ -391,7 +417,7 @@ class MockDio extends _i1.Mock implements _i12.Dio {
             #onReceiveProgress: onReceiveProgress,
           },
         ),
-        returnValue: _i13.Future<_i6.Response<T>>.value(_FakeResponse_4<T>(
+        returnValue: _i15.Future<_i6.Response<T>>.value(_FakeResponse_4<T>(
           this,
           Invocation.method(
             #post,
@@ -406,14 +432,14 @@ class MockDio extends _i1.Mock implements _i12.Dio {
             },
           ),
         )),
-      ) as _i13.Future<_i6.Response<T>>);
+      ) as _i15.Future<_i6.Response<T>>);
 
   @override
-  _i13.Future<_i6.Response<T>> postUri<T>(
+  _i15.Future<_i6.Response<T>> postUri<T>(
     Uri? uri, {
     Object? data,
     _i2.Options? options,
-    _i14.CancelToken? cancelToken,
+    _i16.CancelToken? cancelToken,
     _i2.ProgressCallback? onSendProgress,
     _i2.ProgressCallback? onReceiveProgress,
   }) =>
@@ -429,7 +455,7 @@ class MockDio extends _i1.Mock implements _i12.Dio {
             #onReceiveProgress: onReceiveProgress,
           },
         ),
-        returnValue: _i13.Future<_i6.Response<T>>.value(_FakeResponse_4<T>(
+        returnValue: _i15.Future<_i6.Response<T>>.value(_FakeResponse_4<T>(
           this,
           Invocation.method(
             #postUri,
@@ -443,15 +469,15 @@ class MockDio extends _i1.Mock implements _i12.Dio {
             },
           ),
         )),
-      ) as _i13.Future<_i6.Response<T>>);
+      ) as _i15.Future<_i6.Response<T>>);
 
   @override
-  _i13.Future<_i6.Response<T>> put<T>(
+  _i15.Future<_i6.Response<T>> put<T>(
     String? path, {
     Object? data,
     Map<String, dynamic>? queryParameters,
     _i2.Options? options,
-    _i14.CancelToken? cancelToken,
+    _i16.CancelToken? cancelToken,
     _i2.ProgressCallback? onSendProgress,
     _i2.ProgressCallback? onReceiveProgress,
   }) =>
@@ -468,7 +494,7 @@ class MockDio extends _i1.Mock implements _i12.Dio {
             #onReceiveProgress: onReceiveProgress,
           },
         ),
-        returnValue: _i13.Future<_i6.Response<T>>.value(_FakeResponse_4<T>(
+        returnValue: _i15.Future<_i6.Response<T>>.value(_FakeResponse_4<T>(
           this,
           Invocation.method(
             #put,
@@ -483,14 +509,14 @@ class MockDio extends _i1.Mock implements _i12.Dio {
             },
           ),
         )),
-      ) as _i13.Future<_i6.Response<T>>);
+      ) as _i15.Future<_i6.Response<T>>);
 
   @override
-  _i13.Future<_i6.Response<T>> putUri<T>(
+  _i15.Future<_i6.Response<T>> putUri<T>(
     Uri? uri, {
     Object? data,
     _i2.Options? options,
-    _i14.CancelToken? cancelToken,
+    _i16.CancelToken? cancelToken,
     _i2.ProgressCallback? onSendProgress,
     _i2.ProgressCallback? onReceiveProgress,
   }) =>
@@ -506,7 +532,7 @@ class MockDio extends _i1.Mock implements _i12.Dio {
             #onReceiveProgress: onReceiveProgress,
           },
         ),
-        returnValue: _i13.Future<_i6.Response<T>>.value(_FakeResponse_4<T>(
+        returnValue: _i15.Future<_i6.Response<T>>.value(_FakeResponse_4<T>(
           this,
           Invocation.method(
             #putUri,
@@ -520,15 +546,15 @@ class MockDio extends _i1.Mock implements _i12.Dio {
             },
           ),
         )),
-      ) as _i13.Future<_i6.Response<T>>);
+      ) as _i15.Future<_i6.Response<T>>);
 
   @override
-  _i13.Future<_i6.Response<T>> patch<T>(
+  _i15.Future<_i6.Response<T>> patch<T>(
     String? path, {
     Object? data,
     Map<String, dynamic>? queryParameters,
     _i2.Options? options,
-    _i14.CancelToken? cancelToken,
+    _i16.CancelToken? cancelToken,
     _i2.ProgressCallback? onSendProgress,
     _i2.ProgressCallback? onReceiveProgress,
   }) =>
@@ -545,7 +571,7 @@ class MockDio extends _i1.Mock implements _i12.Dio {
             #onReceiveProgress: onReceiveProgress,
           },
         ),
-        returnValue: _i13.Future<_i6.Response<T>>.value(_FakeResponse_4<T>(
+        returnValue: _i15.Future<_i6.Response<T>>.value(_FakeResponse_4<T>(
           this,
           Invocation.method(
             #patch,
@@ -560,14 +586,14 @@ class MockDio extends _i1.Mock implements _i12.Dio {
             },
           ),
         )),
-      ) as _i13.Future<_i6.Response<T>>);
+      ) as _i15.Future<_i6.Response<T>>);
 
   @override
-  _i13.Future<_i6.Response<T>> patchUri<T>(
+  _i15.Future<_i6.Response<T>> patchUri<T>(
     Uri? uri, {
     Object? data,
     _i2.Options? options,
-    _i14.CancelToken? cancelToken,
+    _i16.CancelToken? cancelToken,
     _i2.ProgressCallback? onSendProgress,
     _i2.ProgressCallback? onReceiveProgress,
   }) =>
@@ -583,7 +609,7 @@ class MockDio extends _i1.Mock implements _i12.Dio {
             #onReceiveProgress: onReceiveProgress,
           },
         ),
-        returnValue: _i13.Future<_i6.Response<T>>.value(_FakeResponse_4<T>(
+        returnValue: _i15.Future<_i6.Response<T>>.value(_FakeResponse_4<T>(
           this,
           Invocation.method(
             #patchUri,
@@ -597,15 +623,15 @@ class MockDio extends _i1.Mock implements _i12.Dio {
             },
           ),
         )),
-      ) as _i13.Future<_i6.Response<T>>);
+      ) as _i15.Future<_i6.Response<T>>);
 
   @override
-  _i13.Future<_i6.Response<T>> delete<T>(
+  _i15.Future<_i6.Response<T>> delete<T>(
     String? path, {
     Object? data,
     Map<String, dynamic>? queryParameters,
     _i2.Options? options,
-    _i14.CancelToken? cancelToken,
+    _i16.CancelToken? cancelToken,
   }) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -618,7 +644,7 @@ class MockDio extends _i1.Mock implements _i12.Dio {
             #cancelToken: cancelToken,
           },
         ),
-        returnValue: _i13.Future<_i6.Response<T>>.value(_FakeResponse_4<T>(
+        returnValue: _i15.Future<_i6.Response<T>>.value(_FakeResponse_4<T>(
           this,
           Invocation.method(
             #delete,
@@ -631,14 +657,14 @@ class MockDio extends _i1.Mock implements _i12.Dio {
             },
           ),
         )),
-      ) as _i13.Future<_i6.Response<T>>);
+      ) as _i15.Future<_i6.Response<T>>);
 
   @override
-  _i13.Future<_i6.Response<T>> deleteUri<T>(
+  _i15.Future<_i6.Response<T>> deleteUri<T>(
     Uri? uri, {
     Object? data,
     _i2.Options? options,
-    _i14.CancelToken? cancelToken,
+    _i16.CancelToken? cancelToken,
   }) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -650,7 +676,7 @@ class MockDio extends _i1.Mock implements _i12.Dio {
             #cancelToken: cancelToken,
           },
         ),
-        returnValue: _i13.Future<_i6.Response<T>>.value(_FakeResponse_4<T>(
+        returnValue: _i15.Future<_i6.Response<T>>.value(_FakeResponse_4<T>(
           this,
           Invocation.method(
             #deleteUri,
@@ -662,15 +688,15 @@ class MockDio extends _i1.Mock implements _i12.Dio {
             },
           ),
         )),
-      ) as _i13.Future<_i6.Response<T>>);
+      ) as _i15.Future<_i6.Response<T>>);
 
   @override
-  _i13.Future<_i6.Response<dynamic>> download(
+  _i15.Future<_i6.Response<dynamic>> download(
     String? urlPath,
     dynamic savePath, {
     _i2.ProgressCallback? onReceiveProgress,
     Map<String, dynamic>? queryParameters,
-    _i14.CancelToken? cancelToken,
+    _i16.CancelToken? cancelToken,
     bool? deleteOnError = true,
     String? lengthHeader = r'content-length',
     Object? data,
@@ -694,7 +720,7 @@ class MockDio extends _i1.Mock implements _i12.Dio {
           },
         ),
         returnValue:
-            _i13.Future<_i6.Response<dynamic>>.value(_FakeResponse_4<dynamic>(
+            _i15.Future<_i6.Response<dynamic>>.value(_FakeResponse_4<dynamic>(
           this,
           Invocation.method(
             #download,
@@ -713,14 +739,14 @@ class MockDio extends _i1.Mock implements _i12.Dio {
             },
           ),
         )),
-      ) as _i13.Future<_i6.Response<dynamic>>);
+      ) as _i15.Future<_i6.Response<dynamic>>);
 
   @override
-  _i13.Future<_i6.Response<dynamic>> downloadUri(
+  _i15.Future<_i6.Response<dynamic>> downloadUri(
     Uri? uri,
     dynamic savePath, {
     _i2.ProgressCallback? onReceiveProgress,
-    _i14.CancelToken? cancelToken,
+    _i16.CancelToken? cancelToken,
     bool? deleteOnError = true,
     String? lengthHeader = r'content-length',
     Object? data,
@@ -743,7 +769,7 @@ class MockDio extends _i1.Mock implements _i12.Dio {
           },
         ),
         returnValue:
-            _i13.Future<_i6.Response<dynamic>>.value(_FakeResponse_4<dynamic>(
+            _i15.Future<_i6.Response<dynamic>>.value(_FakeResponse_4<dynamic>(
           this,
           Invocation.method(
             #downloadUri,
@@ -761,14 +787,14 @@ class MockDio extends _i1.Mock implements _i12.Dio {
             },
           ),
         )),
-      ) as _i13.Future<_i6.Response<dynamic>>);
+      ) as _i15.Future<_i6.Response<dynamic>>);
 
   @override
-  _i13.Future<_i6.Response<T>> request<T>(
+  _i15.Future<_i6.Response<T>> request<T>(
     String? url, {
     Object? data,
     Map<String, dynamic>? queryParameters,
-    _i14.CancelToken? cancelToken,
+    _i16.CancelToken? cancelToken,
     _i2.Options? options,
     _i2.ProgressCallback? onSendProgress,
     _i2.ProgressCallback? onReceiveProgress,
@@ -786,7 +812,7 @@ class MockDio extends _i1.Mock implements _i12.Dio {
             #onReceiveProgress: onReceiveProgress,
           },
         ),
-        returnValue: _i13.Future<_i6.Response<T>>.value(_FakeResponse_4<T>(
+        returnValue: _i15.Future<_i6.Response<T>>.value(_FakeResponse_4<T>(
           this,
           Invocation.method(
             #request,
@@ -801,13 +827,13 @@ class MockDio extends _i1.Mock implements _i12.Dio {
             },
           ),
         )),
-      ) as _i13.Future<_i6.Response<T>>);
+      ) as _i15.Future<_i6.Response<T>>);
 
   @override
-  _i13.Future<_i6.Response<T>> requestUri<T>(
+  _i15.Future<_i6.Response<T>> requestUri<T>(
     Uri? uri, {
     Object? data,
-    _i14.CancelToken? cancelToken,
+    _i16.CancelToken? cancelToken,
     _i2.Options? options,
     _i2.ProgressCallback? onSendProgress,
     _i2.ProgressCallback? onReceiveProgress,
@@ -824,7 +850,7 @@ class MockDio extends _i1.Mock implements _i12.Dio {
             #onReceiveProgress: onReceiveProgress,
           },
         ),
-        returnValue: _i13.Future<_i6.Response<T>>.value(_FakeResponse_4<T>(
+        returnValue: _i15.Future<_i6.Response<T>>.value(_FakeResponse_4<T>(
           this,
           Invocation.method(
             #requestUri,
@@ -838,29 +864,29 @@ class MockDio extends _i1.Mock implements _i12.Dio {
             },
           ),
         )),
-      ) as _i13.Future<_i6.Response<T>>);
+      ) as _i15.Future<_i6.Response<T>>);
 
   @override
-  _i13.Future<_i6.Response<T>> fetch<T>(_i2.RequestOptions? requestOptions) =>
+  _i15.Future<_i6.Response<T>> fetch<T>(_i2.RequestOptions? requestOptions) =>
       (super.noSuchMethod(
         Invocation.method(
           #fetch,
           [requestOptions],
         ),
-        returnValue: _i13.Future<_i6.Response<T>>.value(_FakeResponse_4<T>(
+        returnValue: _i15.Future<_i6.Response<T>>.value(_FakeResponse_4<T>(
           this,
           Invocation.method(
             #fetch,
             [requestOptions],
           ),
         )),
-      ) as _i13.Future<_i6.Response<T>>);
+      ) as _i15.Future<_i6.Response<T>>);
 }
 
 /// A class which mocks [CardTableCubit].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockCardTableCubit extends _i1.Mock implements _i15.CardTableCubit {
+class MockCardTableCubit extends _i1.Mock implements _i17.CardTableCubit {
   MockCardTableCubit() {
     _i1.throwOnMissingStub(this);
   }
@@ -893,6 +919,24 @@ class MockCardTableCubit extends _i1.Mock implements _i15.CardTableCubit {
       ) as _i9.ShuffleCards);
 
   @override
+  _i10.CalculateScore get calculateScore => (super.noSuchMethod(
+        Invocation.getter(#calculateScore),
+        returnValue: _FakeCalculateScore_8(
+          this,
+          Invocation.getter(#calculateScore),
+        ),
+      ) as _i10.CalculateScore);
+
+  @override
+  _i11.ValidateWin get validateWin => (super.noSuchMethod(
+        Invocation.getter(#validateWin),
+        returnValue: _FakeValidateWin_9(
+          this,
+          Invocation.getter(#validateWin),
+        ),
+      ) as _i11.ValidateWin);
+
+  @override
   String get deckId => (super.noSuchMethod(
         Invocation.getter(#deckId),
         returnValue: '',
@@ -908,19 +952,19 @@ class MockCardTableCubit extends _i1.Mock implements _i15.CardTableCubit {
       );
 
   @override
-  _i10.CardTableState get state => (super.noSuchMethod(
+  _i12.CardTableState get state => (super.noSuchMethod(
         Invocation.getter(#state),
-        returnValue: _FakeCardTableState_8(
+        returnValue: _FakeCardTableState_10(
           this,
           Invocation.getter(#state),
         ),
-      ) as _i10.CardTableState);
+      ) as _i12.CardTableState);
 
   @override
-  _i13.Stream<_i10.CardTableState> get stream => (super.noSuchMethod(
+  _i15.Stream<_i12.CardTableState> get stream => (super.noSuchMethod(
         Invocation.getter(#stream),
-        returnValue: _i13.Stream<_i10.CardTableState>.empty(),
-      ) as _i13.Stream<_i10.CardTableState>);
+        returnValue: _i15.Stream<_i12.CardTableState>.empty(),
+      ) as _i15.Stream<_i12.CardTableState>);
 
   @override
   bool get isClosed => (super.noSuchMethod(
@@ -947,7 +991,7 @@ class MockCardTableCubit extends _i1.Mock implements _i15.CardTableCubit {
       );
 
   @override
-  _i13.Future<void> fetchCard({
+  _i15.Future<void> fetchCard({
     required String? count,
     required String? deckId,
   }) =>
@@ -960,36 +1004,36 @@ class MockCardTableCubit extends _i1.Mock implements _i15.CardTableCubit {
             #deckId: deckId,
           },
         ),
-        returnValue: _i13.Future<void>.value(),
-        returnValueForMissingStub: _i13.Future<void>.value(),
-      ) as _i13.Future<void>);
+        returnValue: _i15.Future<void>.value(),
+        returnValueForMissingStub: _i15.Future<void>.value(),
+      ) as _i15.Future<void>);
 
   @override
-  _i13.Future<void> fetchReshuffleCards({required String? deckId}) =>
+  _i15.Future<void> fetchReshuffleCards({required String? deckId}) =>
       (super.noSuchMethod(
         Invocation.method(
           #fetchReshuffleCards,
           [],
           {#deckId: deckId},
         ),
-        returnValue: _i13.Future<void>.value(),
-        returnValueForMissingStub: _i13.Future<void>.value(),
-      ) as _i13.Future<void>);
+        returnValue: _i15.Future<void>.value(),
+        returnValueForMissingStub: _i15.Future<void>.value(),
+      ) as _i15.Future<void>);
 
   @override
-  _i13.Future<void> fetchShuffleCards({required String? deckCount}) =>
+  _i15.Future<void> fetchShuffleCards({required String? deckCount}) =>
       (super.noSuchMethod(
         Invocation.method(
           #fetchShuffleCards,
           [],
           {#deckCount: deckCount},
         ),
-        returnValue: _i13.Future<void>.value(),
-        returnValueForMissingStub: _i13.Future<void>.value(),
-      ) as _i13.Future<void>);
+        returnValue: _i15.Future<void>.value(),
+        returnValueForMissingStub: _i15.Future<void>.value(),
+      ) as _i15.Future<void>);
 
   @override
-  void emit(_i10.CardTableState? state) => super.noSuchMethod(
+  void emit(_i12.CardTableState? state) => super.noSuchMethod(
         Invocation.method(
           #emit,
           [state],
@@ -998,7 +1042,7 @@ class MockCardTableCubit extends _i1.Mock implements _i15.CardTableCubit {
       );
 
   @override
-  void onChange(_i16.Change<_i10.CardTableState>? change) => super.noSuchMethod(
+  void onChange(_i18.Change<_i12.CardTableState>? change) => super.noSuchMethod(
         Invocation.method(
           #onChange,
           [change],
@@ -1039,14 +1083,14 @@ class MockCardTableCubit extends _i1.Mock implements _i15.CardTableCubit {
       );
 
   @override
-  _i13.Future<void> close() => (super.noSuchMethod(
+  _i15.Future<void> close() => (super.noSuchMethod(
         Invocation.method(
           #close,
           [],
         ),
-        returnValue: _i13.Future<void>.value(),
-        returnValueForMissingStub: _i13.Future<void>.value(),
-      ) as _i13.Future<void>);
+        returnValue: _i15.Future<void>.value(),
+        returnValueForMissingStub: _i15.Future<void>.value(),
+      ) as _i15.Future<void>);
 }
 
 /// A class which mocks [DrawCard].
@@ -1058,7 +1102,7 @@ class MockDrawCard extends _i1.Mock implements _i7.DrawCard {
   }
 
   @override
-  _i13.Future<_i11.Either<_i17.CardTableFailure, _i18.CardModel>> call({
+  _i15.Future<_i13.Either<_i19.CardTableFailure, _i20.CardModel>> call({
     required String? count,
     required String? deckId,
   }) =>
@@ -1071,9 +1115,9 @@ class MockDrawCard extends _i1.Mock implements _i7.DrawCard {
             #deckId: deckId,
           },
         ),
-        returnValue: _i13
-            .Future<_i11.Either<_i17.CardTableFailure, _i18.CardModel>>.value(
-            _FakeEither_9<_i17.CardTableFailure, _i18.CardModel>(
+        returnValue: _i15
+            .Future<_i13.Either<_i19.CardTableFailure, _i20.CardModel>>.value(
+            _FakeEither_11<_i19.CardTableFailure, _i20.CardModel>(
           this,
           Invocation.method(
             #call,
@@ -1084,7 +1128,7 @@ class MockDrawCard extends _i1.Mock implements _i7.DrawCard {
             },
           ),
         )),
-      ) as _i13.Future<_i11.Either<_i17.CardTableFailure, _i18.CardModel>>);
+      ) as _i15.Future<_i13.Either<_i19.CardTableFailure, _i20.CardModel>>);
 }
 
 /// A class which mocks [ReshuffleCards].
@@ -1096,7 +1140,7 @@ class MockReshuffleCards extends _i1.Mock implements _i8.ReshuffleCards {
   }
 
   @override
-  _i13.Future<_i11.Either<_i17.CardTableFailure, _i19.DeckModel>> call(
+  _i15.Future<_i13.Either<_i19.CardTableFailure, _i21.DeckModel>> call(
           {required String? deckId}) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -1104,9 +1148,9 @@ class MockReshuffleCards extends _i1.Mock implements _i8.ReshuffleCards {
           [],
           {#deckId: deckId},
         ),
-        returnValue: _i13
-            .Future<_i11.Either<_i17.CardTableFailure, _i19.DeckModel>>.value(
-            _FakeEither_9<_i17.CardTableFailure, _i19.DeckModel>(
+        returnValue: _i15
+            .Future<_i13.Either<_i19.CardTableFailure, _i21.DeckModel>>.value(
+            _FakeEither_11<_i19.CardTableFailure, _i21.DeckModel>(
           this,
           Invocation.method(
             #call,
@@ -1114,7 +1158,7 @@ class MockReshuffleCards extends _i1.Mock implements _i8.ReshuffleCards {
             {#deckId: deckId},
           ),
         )),
-      ) as _i13.Future<_i11.Either<_i17.CardTableFailure, _i19.DeckModel>>);
+      ) as _i15.Future<_i13.Either<_i19.CardTableFailure, _i21.DeckModel>>);
 }
 
 /// A class which mocks [ShuffleCards].
@@ -1126,7 +1170,7 @@ class MockShuffleCards extends _i1.Mock implements _i9.ShuffleCards {
   }
 
   @override
-  _i13.Future<_i11.Either<_i17.CardTableFailure, _i19.DeckModel>> call(
+  _i15.Future<_i13.Either<_i19.CardTableFailure, _i21.DeckModel>> call(
           {required String? deckCount}) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -1134,9 +1178,9 @@ class MockShuffleCards extends _i1.Mock implements _i9.ShuffleCards {
           [],
           {#deckCount: deckCount},
         ),
-        returnValue: _i13
-            .Future<_i11.Either<_i17.CardTableFailure, _i19.DeckModel>>.value(
-            _FakeEither_9<_i17.CardTableFailure, _i19.DeckModel>(
+        returnValue: _i15
+            .Future<_i13.Either<_i19.CardTableFailure, _i21.DeckModel>>.value(
+            _FakeEither_11<_i19.CardTableFailure, _i21.DeckModel>(
           this,
           Invocation.method(
             #call,
@@ -1144,29 +1188,70 @@ class MockShuffleCards extends _i1.Mock implements _i9.ShuffleCards {
             {#deckCount: deckCount},
           ),
         )),
-      ) as _i13.Future<_i11.Either<_i17.CardTableFailure, _i19.DeckModel>>);
+      ) as _i15.Future<_i13.Either<_i19.CardTableFailure, _i21.DeckModel>>);
+}
+
+/// A class which mocks [ValidateWin].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockValidateWin extends _i1.Mock implements _i11.ValidateWin {
+  MockValidateWin() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i22.GameResults? call({
+    required int? userScore,
+    required int? cpuScore,
+  }) =>
+      (super.noSuchMethod(Invocation.method(
+        #call,
+        [],
+        {
+          #userScore: userScore,
+          #cpuScore: cpuScore,
+        },
+      )) as _i22.GameResults?);
+}
+
+/// A class which mocks [CalculateScore].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockCalculateScore extends _i1.Mock implements _i10.CalculateScore {
+  MockCalculateScore() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  int call(List<_i20.Cards>? cards) => (super.noSuchMethod(
+        Invocation.method(
+          #call,
+          [cards],
+        ),
+        returnValue: 0,
+      ) as int);
 }
 
 /// A class which mocks [CardTableRepository].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockCardTableRepository extends _i1.Mock
-    implements _i20.CardTableRepository {
+    implements _i23.CardTableRepository {
   MockCardTableRepository() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i13.Future<_i11.Either<_i17.CardTableFailure, _i19.DeckModel>>
+  _i15.Future<_i13.Either<_i19.CardTableFailure, _i21.DeckModel>>
       getShuffleCards({required String? deckCount}) => (super.noSuchMethod(
             Invocation.method(
               #getShuffleCards,
               [],
               {#deckCount: deckCount},
             ),
-            returnValue: _i13.Future<
-                    _i11.Either<_i17.CardTableFailure, _i19.DeckModel>>.value(
-                _FakeEither_9<_i17.CardTableFailure, _i19.DeckModel>(
+            returnValue: _i15.Future<
+                    _i13.Either<_i19.CardTableFailure, _i21.DeckModel>>.value(
+                _FakeEither_11<_i19.CardTableFailure, _i21.DeckModel>(
               this,
               Invocation.method(
                 #getShuffleCards,
@@ -1174,19 +1259,19 @@ class MockCardTableRepository extends _i1.Mock
                 {#deckCount: deckCount},
               ),
             )),
-          ) as _i13.Future<_i11.Either<_i17.CardTableFailure, _i19.DeckModel>>);
+          ) as _i15.Future<_i13.Either<_i19.CardTableFailure, _i21.DeckModel>>);
 
   @override
-  _i13.Future<_i11.Either<_i17.CardTableFailure, _i19.DeckModel>>
+  _i15.Future<_i13.Either<_i19.CardTableFailure, _i21.DeckModel>>
       getReshuffleCards({required String? deckId}) => (super.noSuchMethod(
             Invocation.method(
               #getReshuffleCards,
               [],
               {#deckId: deckId},
             ),
-            returnValue: _i13.Future<
-                    _i11.Either<_i17.CardTableFailure, _i19.DeckModel>>.value(
-                _FakeEither_9<_i17.CardTableFailure, _i19.DeckModel>(
+            returnValue: _i15.Future<
+                    _i13.Either<_i19.CardTableFailure, _i21.DeckModel>>.value(
+                _FakeEither_11<_i19.CardTableFailure, _i21.DeckModel>(
               this,
               Invocation.method(
                 #getReshuffleCards,
@@ -1194,10 +1279,10 @@ class MockCardTableRepository extends _i1.Mock
                 {#deckId: deckId},
               ),
             )),
-          ) as _i13.Future<_i11.Either<_i17.CardTableFailure, _i19.DeckModel>>);
+          ) as _i15.Future<_i13.Either<_i19.CardTableFailure, _i21.DeckModel>>);
 
   @override
-  _i13.Future<_i11.Either<_i17.CardTableFailure, _i18.CardModel>> getDrawCard({
+  _i15.Future<_i13.Either<_i19.CardTableFailure, _i20.CardModel>> getDrawCard({
     required String? count,
     required String? deckId,
   }) =>
@@ -1210,9 +1295,9 @@ class MockCardTableRepository extends _i1.Mock
             #deckId: deckId,
           },
         ),
-        returnValue: _i13
-            .Future<_i11.Either<_i17.CardTableFailure, _i18.CardModel>>.value(
-            _FakeEither_9<_i17.CardTableFailure, _i18.CardModel>(
+        returnValue: _i15
+            .Future<_i13.Either<_i19.CardTableFailure, _i20.CardModel>>.value(
+            _FakeEither_11<_i19.CardTableFailure, _i20.CardModel>(
           this,
           Invocation.method(
             #getDrawCard,
@@ -1223,30 +1308,30 @@ class MockCardTableRepository extends _i1.Mock
             },
           ),
         )),
-      ) as _i13.Future<_i11.Either<_i17.CardTableFailure, _i18.CardModel>>);
+      ) as _i15.Future<_i13.Either<_i19.CardTableFailure, _i20.CardModel>>);
 }
 
 /// A class which mocks [CardTableRemoteDatasource].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockCardTableRemoteDatasource extends _i1.Mock
-    implements _i21.CardTableRemoteDatasource {
+    implements _i24.CardTableRemoteDatasource {
   MockCardTableRemoteDatasource() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i13.Future<_i11.Either<_i17.CardTableFailure, Map<String, dynamic>>>
+  _i15.Future<_i13.Either<_i19.CardTableFailure, Map<String, dynamic>>>
       getShuffleCards({required String? deckCount}) => (super.noSuchMethod(
             Invocation.method(
               #getShuffleCards,
               [],
               {#deckCount: deckCount},
             ),
-            returnValue: _i13.Future<
-                    _i11
-                    .Either<_i17.CardTableFailure, Map<String, dynamic>>>.value(
-                _FakeEither_9<_i17.CardTableFailure, Map<String, dynamic>>(
+            returnValue: _i15.Future<
+                    _i13
+                    .Either<_i19.CardTableFailure, Map<String, dynamic>>>.value(
+                _FakeEither_11<_i19.CardTableFailure, Map<String, dynamic>>(
               this,
               Invocation.method(
                 #getShuffleCards,
@@ -1254,21 +1339,21 @@ class MockCardTableRemoteDatasource extends _i1.Mock
                 {#deckCount: deckCount},
               ),
             )),
-          ) as _i13.Future<
-              _i11.Either<_i17.CardTableFailure, Map<String, dynamic>>>);
+          ) as _i15.Future<
+              _i13.Either<_i19.CardTableFailure, Map<String, dynamic>>>);
 
   @override
-  _i13.Future<_i11.Either<_i17.CardTableFailure, Map<String, dynamic>>>
+  _i15.Future<_i13.Either<_i19.CardTableFailure, Map<String, dynamic>>>
       getReshuffleCards({required String? deckId}) => (super.noSuchMethod(
             Invocation.method(
               #getReshuffleCards,
               [],
               {#deckId: deckId},
             ),
-            returnValue: _i13.Future<
-                    _i11
-                    .Either<_i17.CardTableFailure, Map<String, dynamic>>>.value(
-                _FakeEither_9<_i17.CardTableFailure, Map<String, dynamic>>(
+            returnValue: _i15.Future<
+                    _i13
+                    .Either<_i19.CardTableFailure, Map<String, dynamic>>>.value(
+                _FakeEither_11<_i19.CardTableFailure, Map<String, dynamic>>(
               this,
               Invocation.method(
                 #getReshuffleCards,
@@ -1276,12 +1361,12 @@ class MockCardTableRemoteDatasource extends _i1.Mock
                 {#deckId: deckId},
               ),
             )),
-          ) as _i13.Future<
-              _i11.Either<_i17.CardTableFailure, Map<String, dynamic>>>);
+          ) as _i15.Future<
+              _i13.Either<_i19.CardTableFailure, Map<String, dynamic>>>);
 
   @override
-  _i13.Future<
-      _i11.Either<_i17.CardTableFailure, Map<String, dynamic>>> getDrawCard({
+  _i15.Future<
+      _i13.Either<_i19.CardTableFailure, Map<String, dynamic>>> getDrawCard({
     required String? count,
     required String? deckId,
   }) =>
@@ -1294,9 +1379,9 @@ class MockCardTableRemoteDatasource extends _i1.Mock
             #deckId: deckId,
           },
         ),
-        returnValue: _i13.Future<
-                _i11.Either<_i17.CardTableFailure, Map<String, dynamic>>>.value(
-            _FakeEither_9<_i17.CardTableFailure, Map<String, dynamic>>(
+        returnValue: _i15.Future<
+                _i13.Either<_i19.CardTableFailure, Map<String, dynamic>>>.value(
+            _FakeEither_11<_i19.CardTableFailure, Map<String, dynamic>>(
           this,
           Invocation.method(
             #getDrawCard,
@@ -1307,6 +1392,6 @@ class MockCardTableRemoteDatasource extends _i1.Mock
             },
           ),
         )),
-      ) as _i13
-          .Future<_i11.Either<_i17.CardTableFailure, Map<String, dynamic>>>);
+      ) as _i15
+          .Future<_i13.Either<_i19.CardTableFailure, Map<String, dynamic>>>);
 }

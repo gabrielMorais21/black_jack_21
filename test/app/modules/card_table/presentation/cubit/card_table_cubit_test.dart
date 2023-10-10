@@ -1,7 +1,9 @@
 import 'package:black_jack_21/app/core/mock/card_table_mock.dart';
+import 'package:black_jack_21/app/modules/card_table/domain/usecases/calculate_score/calculate_score.dart';
 import 'package:black_jack_21/app/modules/card_table/domain/usecases/draw_card/draw_card.dart';
 import 'package:black_jack_21/app/modules/card_table/domain/usecases/reshuffle_cards/reshuffle_cards.dart';
 import 'package:black_jack_21/app/modules/card_table/domain/usecases/shuffle_cards/shuffle_cards.dart';
+import 'package:black_jack_21/app/modules/card_table/domain/usecases/validate_win/validate_win.dart';
 import 'package:black_jack_21/app/modules/card_table/infra/models/card_model.dart';
 import 'package:black_jack_21/app/modules/card_table/infra/models/deck_model.dart';
 import 'package:black_jack_21/app/modules/card_table/presentation/cubit/card_table_cubit.dart';
@@ -12,18 +14,23 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../../../../mock/mock.mocks.dart';
+// ignore: library_prefixes
 import 'package:black_jack_21/injection_container.dart' as injectionContainer;
 
 void main() {
   MockDrawCard mockDrawCard = MockDrawCard();
   MockReshuffleCards mockReshuffleCards = MockReshuffleCards();
   MockShuffleCards mockShuffleCards = MockShuffleCards();
+  MockValidateWin mockValidateWin = MockValidateWin();
+  MockCalculateScore mockCalculateScore = MockCalculateScore();
   final CardTableMock cardTableMock = CardTableMock();
 
   setUpAll(() {
     injectionContainer.sl.registerSingleton<DrawCard>(mockDrawCard);
     injectionContainer.sl.registerSingleton<ReshuffleCards>(mockReshuffleCards);
     injectionContainer.sl.registerSingleton<ShuffleCards>(mockShuffleCards);
+    injectionContainer.sl.registerSingleton<ValidateWin>(mockValidateWin);
+    injectionContainer.sl.registerSingleton<CalculateScore>(mockCalculateScore);
   });
 
   blocTest(
@@ -35,6 +42,8 @@ void main() {
       drawCard: injectionContainer.sl(),
       reshuffleCards: injectionContainer.sl(),
       shuffleCards: injectionContainer.sl(),
+      validateWin: injectionContainer.sl(),
+      calculateScore: injectionContainer.sl(),
       initialState: CardTableInitialState(),
     ),
     act: (cubit) => cubit.fetchCard(count: "2", deckId: "3p40paa87x90"),
@@ -53,6 +62,8 @@ void main() {
       drawCard: injectionContainer.sl(),
       reshuffleCards: injectionContainer.sl(),
       shuffleCards: injectionContainer.sl(),
+      validateWin: injectionContainer.sl(),
+      calculateScore: injectionContainer.sl(),
       initialState: CardTableInitialState(),
     ),
     act: (cubit) => cubit.fetchShuffleCards(deckCount: "6"),
@@ -71,6 +82,8 @@ void main() {
       drawCard: injectionContainer.sl(),
       reshuffleCards: injectionContainer.sl(),
       shuffleCards: injectionContainer.sl(),
+      validateWin: injectionContainer.sl(),
+      calculateScore: injectionContainer.sl(),
       initialState: CardTableInitialState(),
     ),
     act: (cubit) => cubit.fetchReshuffleCards(deckId: "3p40paa87x90"),

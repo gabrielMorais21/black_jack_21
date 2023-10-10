@@ -7,6 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:dio/dio.dart';
 import 'package:mockito/mockito.dart';
 import '../../../../../mock/mock.mocks.dart';
+// ignore: library_prefixes
 import 'package:black_jack_21/injection_container.dart' as injectionContainer;
 
 void main() {
