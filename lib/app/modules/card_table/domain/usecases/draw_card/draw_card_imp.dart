@@ -11,6 +11,6 @@ class DrawCardImp implements DrawCard {
 
   @override
   Future<Either<CardTableFailure, CardModel>> call({required String count, required String deckId}) async {
-    return await repository.postDrawCard(count: count, deckId: deckId);
+    return await repository.getDrawCard(count: count, deckId: deckId);
   }
 }

@@ -9,6 +9,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+enum GameResults {
+  win("Você hanhou"),
+  loss("Você perdeu"),
+  draw("Empata");
+
+  const GameResults(this.value);
+  final String value;
+}
+
 class CardTablePage extends StatefulWidget {
   const CardTablePage({super.key});
 
@@ -110,47 +119,19 @@ class _CardTablePageState extends State<CardTablePage> {
     );
   }
 
-  perdeu() {
-    showSuccessModal(context, text: "Perdeu", callback: () async {
-      // await cardTableCubit.fetchReshuffleCards(
-      //   deckId: cardTableCubit.deckId,
-      // );
-      // cardListCpu = [];
-      // cardListUser = [];
-    });
-  }
-
-  ganhou() {
-    showSuccessModal(context, text: "Ganhou", callback: () async {
-      // await cardTableCubit.fetchReshuffleCards(
-      //   deckId: cardTableCubit.deckId,
-      // );
-      // cardListCpu = [];
-      // cardListUser = [];
-    });
-  }
-
-  empate() {
-    showSuccessModal(context, text: "empate", callback: () async {
-      // await cardTableCubit.fetchReshuffleCards(
-      //   deckId: cardTableCubit.deckId,
-      // );
-      // cardListCpu = [];
-      // cardListUser = [];
-    });
-  }
-
-  validateWin() {
+  GameResults? validateWin() {
     if (userScore > 21 && cpuScore > 21) {
-      return empate();
+      return GameResults.draw;
     } else if (userScore == 21 && cpuScore == 21) {
-      return empate();
+      return GameResults.draw;
+    } else if (cpuScore > 21) {
+      return GameResults.win;
     } else if (cpuScore == 21) {
-      return perdeu();
+      return GameResults.loss;
     } else if (userScore > 21) {
-      return perdeu();
+      return GameResults.loss;
     } else if (userScore == 21) {
-      return ganhou();
+      return GameResults.win;
     } else {
       return null; // Empate com pontuações iguais.
     }
@@ -161,18 +142,29 @@ class _CardTablePageState extends State<CardTablePage> {
     return BlocConsumer<CardTableCubit, CardTableState>(
         bloc: cardTableCubit,
         listener: (context, state) async {
-          if (state is DrawCardSuccessState) {}
+          if (state is DrawCardSuccessState) {
+            cardListUser.add(state.cardModel.cards![0]);
+            cardListCpu.add(state.cardModel.cards![1]);
+            userScore = calcularPontuacao(cardListUser);
+            cpuScore = calcularPontuacao(cardListCpu);
+            var result = validateWin();
+            if (result != null) showSuccessModal(context, text: result.value, callback: () async {});
+          }
 
           if (state is ShuffleCardsSuccessState) {
             cardTableCubit.deckId = state.deckId;
-            await cardTableCubit.fetchCard(deckId: cardTableCubit.deckId, count: "1", isCpu: false);
-            await cardTableCubit.fetchCard(deckId: cardTableCubit.deckId, count: "1", isCpu: true);
+            await cardTableCubit.fetchCard(
+              deckId: cardTableCubit.deckId,
+              count: "2",
+            );
           }
 
           if (state is ReshuffleCardsSuccessState) {
             cardTableCubit.deckId = state.deckId;
-            await cardTableCubit.fetchCard(deckId: cardTableCubit.deckId, count: "1", isCpu: false);
-            await cardTableCubit.fetchCard(deckId: cardTableCubit.deckId, count: "1", isCpu: true);
+            await cardTableCubit.fetchCard(
+              deckId: cardTableCubit.deckId,
+              count: "2",
+            );
           }
         },
         builder: ((context, state) {
@@ -249,24 +241,10 @@ class _CardTablePageState extends State<CardTablePage> {
                                   style: TextStyle(fontWeight: FontWeight.w900, fontSize: 25),
                                 ),
                                 onPressed: () async {
-                                  await Future.wait([
-                                    cardTableCubit.fetchCard(deckId: cardTableCubit.deckId, count: "1", isCpu: false),
-                                    cardTableCubit.fetchCard(deckId: cardTableCubit.deckId, count: "1", isCpu: true),
-                                  ]);
-
-                                  if (state.isCpu) {
-                                    cardListCpu = cardListCpu + state.cardModel.cards!;
-                                    setState(() {
-                                      cpuScore = calcularPontuacao(cardListCpu);
-                                    });
-                                  } else {
-                                    cardListUser = cardListUser + state.cardModel.cards!;
-                                    setState(() {
-                                      userScore = calcularPontuacao(cardListUser);
-                                    });
-                                  }
-
-                                  validateWin();
+                                  await cardTableCubit.fetchCard(
+                                    deckId: cardTableCubit.deckId,
+                                    count: "2",
+                                  );
                                 },
                               ),
                             ),

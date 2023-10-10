@@ -23,8 +23,8 @@ class CardTableSuccessState extends CardTableState {
 
 class DrawCardSuccessState extends CardTableState {
   final CardModel cardModel;
-  final bool isCpu;
-  DrawCardSuccessState({required this.cardModel, required this.isCpu});
+
+  DrawCardSuccessState({required this.cardModel});
 
   @override
   List<Object> get props => [cardModel];

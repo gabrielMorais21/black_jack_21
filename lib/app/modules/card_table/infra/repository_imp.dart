@@ -9,17 +9,6 @@ class CardTableRepositoryImp implements CardTableRepository {
   final CardTableRemoteDatasource datasource;
 
   CardTableRepositoryImp({required this.datasource});
-
-  @override
-  Future<Either<CardTableFailure, DeckModel>> getNewDeck() async {
-    final result = await datasource.getNewDeck();
-    return result.fold((l) {
-      return left(l);
-    }, (r) {
-      return right(DeckModel.fromJson(r));
-    });
-  }
-
   @override
   Future<Either<CardTableFailure, DeckModel>> getReshuffleCards({required String deckId}) async {
     final result = await datasource.getReshuffleCards(deckId: deckId);
@@ -41,8 +30,8 @@ class CardTableRepositoryImp implements CardTableRepository {
   }
 
   @override
-  Future<Either<CardTableFailure, CardModel>> postDrawCard({required String count, required String deckId}) async {
-    final result = await datasource.postDrawCard(count: count, deckId: deckId);
+  Future<Either<CardTableFailure, CardModel>> getDrawCard({required String count, required String deckId}) async {
+    final result = await datasource.getDrawCard(count: count, deckId: deckId);
     return result.fold((l) {
       return left(l);
     }, (r) {

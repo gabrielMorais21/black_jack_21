@@ -4,8 +4,7 @@ import 'package:black_jack_21/app/modules/card_table/infra/models/deck_model.dar
 import 'package:dartz/dartz.dart';
 
 abstract class CardTableRepository {
-  Future<Either<CardTableFailure,  DeckModel>> getNewDeck();
   Future<Either<CardTableFailure,  DeckModel>> getShuffleCards({required String deckCount});
   Future<Either<CardTableFailure,  DeckModel>> getReshuffleCards({required String deckId});
-  Future<Either<CardTableFailure,  CardModel>> postDrawCard({required String count, required String deckId});
+  Future<Either<CardTableFailure,  CardModel>> getDrawCard({required String count, required String deckId});
 }

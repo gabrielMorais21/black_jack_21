@@ -2,8 +2,6 @@ import 'package:black_jack_21/app/modules/card_table/data/remote/remote_datasour
 import 'package:black_jack_21/app/modules/card_table/data/remote/remote_datasource_imp.dart';
 import 'package:black_jack_21/app/modules/card_table/domain/usecases/draw_card/draw_card.dart';
 import 'package:black_jack_21/app/modules/card_table/domain/usecases/draw_card/draw_card_imp.dart';
-import 'package:black_jack_21/app/modules/card_table/domain/usecases/new_deck/new_deck.dart';
-import 'package:black_jack_21/app/modules/card_table/domain/usecases/new_deck/new_deck_imp.dart';
 import 'package:black_jack_21/app/modules/card_table/domain/usecases/reshuffle_cards/reshuffle_cards.dart';
 import 'package:black_jack_21/app/modules/card_table/domain/usecases/reshuffle_cards/reshuffle_cards_imp.dart';
 import 'package:black_jack_21/app/modules/card_table/domain/usecases/shuffle_cards/shuffle_cards.dart';
@@ -20,11 +18,10 @@ final sl = GetIt.instance;
 Future<void> init() async {
 
   // cubit
-  sl.registerFactory(() => CardTableCubit(drawCard: sl(), newDeck: sl(), reshuffleCards: sl(), shuffleCards: sl(), initialState: CardTableInitialState()));
+  sl.registerFactory(() => CardTableCubit(drawCard: sl(), reshuffleCards: sl(), shuffleCards: sl(), initialState: CardTableInitialState()));
 
   // use cases
   sl.registerLazySingleton<DrawCard>(() => DrawCardImp(repository: sl()));
-  sl.registerLazySingleton<NewDeck>(() => NewDeckImp(repository: sl()));
   sl.registerLazySingleton<ReshuffleCards>(() => ReshuffleCardsImp(repository: sl()));
   sl.registerLazySingleton<ShuffleCards>(() => ShuffleCardsImp(repository: sl()));
 
