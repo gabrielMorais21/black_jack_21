@@ -1,0 +1,82 @@
+import 'package:black_jack_21/app/core/mock/card_table_mock.dart';
+import 'package:black_jack_21/app/modules/card_table/domain/usecases/draw_card/draw_card.dart';
+import 'package:black_jack_21/app/modules/card_table/domain/usecases/reshuffle_cards/reshuffle_cards.dart';
+import 'package:black_jack_21/app/modules/card_table/domain/usecases/shuffle_cards/shuffle_cards.dart';
+import 'package:black_jack_21/app/modules/card_table/infra/models/card_model.dart';
+import 'package:black_jack_21/app/modules/card_table/infra/models/deck_model.dart';
+import 'package:black_jack_21/app/modules/card_table/presentation/cubit/card_table_cubit.dart';
+import 'package:black_jack_21/app/modules/card_table/presentation/cubit/card_table_state.dart';
+import 'package:bloc_test/bloc_test.dart';
+import 'package:dartz/dartz.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
+
+import '../../../../../mock/mock.mocks.dart';
+import 'package:black_jack_21/injection_container.dart' as injectionContainer;
+
+void main() {
+  MockDrawCard mockDrawCard = MockDrawCard();
+  MockReshuffleCards mockReshuffleCards = MockReshuffleCards();
+  MockShuffleCards mockShuffleCards = MockShuffleCards();
+  final CardTableMock cardTableMock = CardTableMock();
+
+  setUpAll(() {
+    injectionContainer.sl.registerSingleton<DrawCard>(mockDrawCard);
+    injectionContainer.sl.registerSingleton<ReshuffleCards>(mockReshuffleCards);
+    injectionContainer.sl.registerSingleton<ShuffleCards>(mockShuffleCards);
+  });
+
+  blocTest(
+    "should make a successful request and return the following states[CardTableLoadingState(), DrawCardSuccessState()]",
+    setUp: () {
+      when(mockDrawCard(count: "2", deckId: "3p40paa87x90")).thenAnswer((_) async => right(CardModel.fromJson(cardTableMock.drawCardSuccess())));
+    },
+    build: () => CardTableCubit(
+      drawCard: injectionContainer.sl(),
+      reshuffleCards: injectionContainer.sl(),
+      shuffleCards: injectionContainer.sl(),
+      initialState: CardTableInitialState(),
+    ),
+    act: (cubit) => cubit.fetchCard(count: "2", deckId: "3p40paa87x90"),
+    expect: () => [
+      isA<CardTableLoadingState>(),
+      isA<DrawCardSuccessState>(),
+    ],
+  );
+
+  blocTest(
+    "should make a successful request and return the following states[CardTableLoadingState(), ShuffleCardsSuccessState()]",
+    setUp: () {
+      when(mockShuffleCards(deckCount: "6")).thenAnswer((_) async => right(DeckModel.fromJson(cardTableMock.shuffleTheCardsSuccess())));
+    },
+    build: () => CardTableCubit(
+      drawCard: injectionContainer.sl(),
+      reshuffleCards: injectionContainer.sl(),
+      shuffleCards: injectionContainer.sl(),
+      initialState: CardTableInitialState(),
+    ),
+    act: (cubit) => cubit.fetchShuffleCards(deckCount: "6"),
+    expect: () => [
+      isA<CardTableLoadingState>(),
+      isA<ShuffleCardsSuccessState>(),
+    ],
+  );
+
+  blocTest(
+    "should make a successful request and return the following states[CardTableLoadingState(), ReshuffleCardsSuccessState()]",
+    setUp: () {
+      when(mockReshuffleCards(deckId: "3p40paa87x90")).thenAnswer((_) async => right(DeckModel.fromJson(cardTableMock.reshuffleTheCardsSuccess())));
+    },
+    build: () => CardTableCubit(
+      drawCard: injectionContainer.sl(),
+      reshuffleCards: injectionContainer.sl(),
+      shuffleCards: injectionContainer.sl(),
+      initialState: CardTableInitialState(),
+    ),
+    act: (cubit) => cubit.fetchReshuffleCards(deckId: "3p40paa87x90"),
+    expect: () => [
+      isA<CardTableLoadingState>(),
+      isA<ReshuffleCardsSuccessState>(),
+    ],
+  );
+}

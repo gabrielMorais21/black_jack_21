@@ -1197,13 +1197,13 @@ class MockCardTableRepository extends _i1.Mock
           ) as _i13.Future<_i11.Either<_i17.CardTableFailure, _i19.DeckModel>>);
 
   @override
-  _i13.Future<_i11.Either<_i17.CardTableFailure, _i18.CardModel>> postDrawCard({
+  _i13.Future<_i11.Either<_i17.CardTableFailure, _i18.CardModel>> getDrawCard({
     required String? count,
     required String? deckId,
   }) =>
       (super.noSuchMethod(
         Invocation.method(
-          #postDrawCard,
+          #getDrawCard,
           [],
           {
             #count: count,
@@ -1215,7 +1215,7 @@ class MockCardTableRepository extends _i1.Mock
             _FakeEither_9<_i17.CardTableFailure, _i18.CardModel>(
           this,
           Invocation.method(
-            #postDrawCard,
+            #getDrawCard,
             [],
             {
               #count: count,
