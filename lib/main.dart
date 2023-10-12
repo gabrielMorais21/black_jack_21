@@ -20,9 +20,11 @@ class MyApp extends StatelessWidget {
         minTextAdapt: true,
         splitScreenMode: true,
         builder: (BuildContext context, Widget? child) {
-          return const MaterialApp(
+          return MaterialApp(
             title: 'Flutter Demo',
-            home: CardTablePage(),
+            home: CardTablePage(
+              cardTableCubit: injectionContainer.sl(),
+            ),
           );
         });
   }

@@ -1223,10 +1223,11 @@ class MockCalculateScore extends _i1.Mock implements _i10.CalculateScore {
   }
 
   @override
-  int call(List<_i20.Cards>? cards) => (super.noSuchMethod(
+  int call({required List<_i20.Cards>? cards}) => (super.noSuchMethod(
         Invocation.method(
           #call,
-          [cards],
+          [],
+          {#cards: cards},
         ),
         returnValue: 0,
       ) as int);

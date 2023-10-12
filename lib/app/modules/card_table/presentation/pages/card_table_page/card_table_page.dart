@@ -8,20 +8,18 @@ import 'package:black_jack_21/app/modules/card_table/presentation/widgets/reshuf
 import 'package:black_jack_21/app/modules/card_table/presentation/widgets/score_label.dart';
 import 'package:black_jack_21/app/modules/card_table/presentation/widgets/show_result_modal.dart';
 // ignore: library_prefixes
-import 'package:black_jack_21/injection_container.dart' as injectionContainer;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CardTablePage extends StatefulWidget {
-  const CardTablePage({super.key});
+  final CardTableCubit cardTableCubit;
+  const CardTablePage({super.key, required this.cardTableCubit});
 
   @override
   State<CardTablePage> createState() => _CardTablePageState();
 }
 
 class _CardTablePageState extends State<CardTablePage> {
-  CardTableCubit cardTableCubit = injectionContainer.sl.get<CardTableCubit>();
-
   List<Cards> cardListCpu = [];
   List<Cards> cardListUser = [];
 
@@ -32,21 +30,23 @@ class _CardTablePageState extends State<CardTablePage> {
 
   @override
   void initState() {
-    cardTableCubit.fetchShuffleCards(deckCount: "6");
+    widget.cardTableCubit.fetchShuffleCards(deckCount: "6");
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<CardTableCubit, CardTableState>(
-        bloc: cardTableCubit,
+        bloc: widget.cardTableCubit,
         listener: (context, state) async {
           if (state is DrawCardSuccessState) {
             cardListUser.add(state.cardModel.cards![0]);
             cardListCpu.add(state.cardModel.cards![1]);
-            userScore = cardTableCubit.calculateScore(cardListUser);
-            cpuScore = cardTableCubit.calculateScore(cardListCpu);
-            var result = cardTableCubit.validateWin(cpuScore: cpuScore, userScore: userScore);
+            userScore =
+                widget.cardTableCubit.calculateScore(cards: cardListUser);
+            cpuScore = widget.cardTableCubit.calculateScore(cards: cardListCpu);
+            var result = widget.cardTableCubit
+                .validateWin(cpuScore: cpuScore, userScore: userScore);
             if (result != null) {
               showResultModal(context, text: result.value, callback: () async {
                 setState(() {
@@ -57,17 +57,17 @@ class _CardTablePageState extends State<CardTablePage> {
           }
 
           if (state is ShuffleCardsSuccessState) {
-            cardTableCubit.deckId = state.deckId;
-            await cardTableCubit.fetchCard(
-              deckId: cardTableCubit.deckId,
+            widget.cardTableCubit.deckId = state.deckId;
+            await widget.cardTableCubit.fetchCard(
+              deckId: widget.cardTableCubit.deckId,
               count: "2",
             );
           }
 
           if (state is ReshuffleCardsSuccessState) {
-            cardTableCubit.deckId = state.deckId;
-            await cardTableCubit.fetchCard(
-              deckId: cardTableCubit.deckId,
+            widget.cardTableCubit.deckId = state.deckId;
+            await widget.cardTableCubit.fetchCard(
+              deckId: widget.cardTableCubit.deckId,
               count: "2",
             );
           }
@@ -75,6 +75,7 @@ class _CardTablePageState extends State<CardTablePage> {
         builder: ((context, state) {
           return Scaffold(
               body: Container(
+            key: const Key("backgroundContainer"),
             decoration: const BoxDecoration(
               image: DecorationImage(
                 image: AssetImage('assets/background.jpg'),
@@ -94,16 +95,17 @@ class _CardTablePageState extends State<CardTablePage> {
                           ScoreLabel(score: cpuScore, scoreOwner: 'CPU'),
                           gameIsFinished
                               ? ReshuffleCardsButton(onPressed: () async {
-                                  await cardTableCubit.fetchReshuffleCards(
-                                    deckId: cardTableCubit.deckId,
+                                  await widget.cardTableCubit
+                                      .fetchReshuffleCards(
+                                    deckId: widget.cardTableCubit.deckId,
                                   );
                                   cardListUser = [];
                                   cardListCpu = [];
                                   gameIsFinished = !gameIsFinished;
                                 })
                               : BuyCardButton(onPressed: () async {
-                                  await cardTableCubit.fetchCard(
-                                    deckId: cardTableCubit.deckId,
+                                  await widget.cardTableCubit.fetchCard(
+                                    deckId: widget.cardTableCubit.deckId,
                                     count: "2",
                                   );
                                 }),

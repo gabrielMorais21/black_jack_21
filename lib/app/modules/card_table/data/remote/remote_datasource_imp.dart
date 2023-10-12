@@ -4,33 +4,13 @@ import 'package:black_jack_21/app/modules/card_table/domain/errors.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 
-// CardTableFailure getFailureError(Response? response) {
-//   if (response == null) return CardTableUnkownError();
-//   switch (response.statusCode) {
-//     case 400:
-//       return CardTableRequestError(message: response.statusMessage, data: response.data);
-//     case 401:
-//       return CardTableUnauthorizedError(message: response.statusMessage, data: response.data);
-//     case 403:
-//       return CardTableForbiddenError(message: response.statusMessage, data: response.data);
-//     case 404:
-//       return CardTableRequestError(message: response.statusMessage, data: response.data);
-//     case 408:
-//       return CardTableRequestError(message: response.statusMessage, data: response.data);
-//     case 500:
-//       return CardTableInternalError(message: response.statusMessage, data: response.data);
-//     default:
-//       if (response.statusMessage == null || response.statusMessage!.toUpperCase() == "OK") response.statusMessage = "Ops, ocorreu um erro";
-//       return CardTableUnkownError(message: response.statusMessage, code: response.statusCode.toString(), data: response.data);
-//   }
-// }
-
 class CardTableRemoteDatasourceImp implements CardTableRemoteDatasource {
   final Dio httpclient;
 
   CardTableRemoteDatasourceImp({required this.httpclient});
   @override
-  Future<Either<CardTableFailure, Map<String, dynamic>>> getReshuffleCards({required String deckId}) async {
+  Future<Either<CardTableFailure, Map<String, dynamic>>> getReshuffleCards(
+      {required String deckId}) async {
     Response? response;
     try {
       var url = ApiRoutes.getReshuffleCards.replaceAll("<<deck_id>>", deckId);
@@ -40,7 +20,8 @@ class CardTableRemoteDatasourceImp implements CardTableRemoteDatasource {
 
       return right(response.data);
     } on CardTableRequestError {
-      return left(CardTableRequestError(message: response?.data['error'] ?? ""));
+      return left(
+          CardTableRequestError(message: response?.data['error'] ?? ""));
     }
   }
 
@@ -57,12 +38,14 @@ class CardTableRemoteDatasourceImp implements CardTableRemoteDatasource {
 
       return right(response.data);
     } on CardTableRequestError {
-      return left(CardTableRequestError(message: response?.data['error'] ?? ""));
+      return left(
+          CardTableRequestError(message: response?.data['error'] ?? ""));
     }
   }
 
   @override
-  Future<Either<CardTableFailure, Map<String, dynamic>>> getDrawCard({required String count, required String deckId}) async {
+  Future<Either<CardTableFailure, Map<String, dynamic>>> getDrawCard(
+      {required String count, required String deckId}) async {
     Response? response;
     try {
       var url = ApiRoutes.postDrawCard.replaceAll("<<count>>", count);
@@ -73,7 +56,8 @@ class CardTableRemoteDatasourceImp implements CardTableRemoteDatasource {
 
       return right(response.data);
     } on CardTableRequestError {
-      return left(CardTableRequestError(message: response?.data['error'] ?? ""));
+      return left(
+          CardTableRequestError(message: response?.data['error'] ?? ""));
     }
   }
 }

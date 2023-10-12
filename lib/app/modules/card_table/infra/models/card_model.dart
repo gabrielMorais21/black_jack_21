@@ -1,4 +1,8 @@
-class CardModel {
+// ignore_for_file: must_be_immutable
+
+import 'package:equatable/equatable.dart';
+
+class CardModel extends Equatable {
   String? deckId;
   List<Cards>? cards;
   int? remaining;
@@ -25,9 +29,12 @@ class CardModel {
     data['remaining'] = remaining;
     return data;
   }
+
+  @override
+  List<Object?> get props => [];
 }
 
-class Cards {
+class Cards extends Equatable {
   String? code;
   String? image;
   Images? images;
@@ -55,9 +62,12 @@ class Cards {
     data['suit'] = suit;
     return data;
   }
+
+  @override
+  List<Object?> get props => [];
 }
 
-class Images {
+class Images extends Equatable {
   String? svg;
   String? png;
 
@@ -74,4 +84,7 @@ class Images {
     data['png'] = png;
     return data;
   }
+
+  @override
+  List<Object?> get props => [];
 }

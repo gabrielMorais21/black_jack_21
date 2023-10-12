@@ -1,4 +1,8 @@
-class DeckModel {
+// ignore_for_file: must_be_immutable
+
+import 'package:equatable/equatable.dart';
+
+class DeckModel extends Equatable {
   String? deckId;
   bool? shuffled;
   int? remaining;
@@ -18,4 +22,7 @@ class DeckModel {
     data['remaining'] = remaining;
     return data;
   }
+
+  @override
+  List<Object?> get props => [];
 }
