@@ -7,7 +7,7 @@ import 'dart:async' as _i15;
 
 import 'package:black_jack_21/app/common/enums/game_results_enum.dart' as _i22;
 import 'package:black_jack_21/app/modules/card_table/data/remote/remote_datasource.dart'
-    as _i24;
+    as _i23;
 import 'package:black_jack_21/app/modules/card_table/domain/errors.dart'
     as _i19;
 import 'package:black_jack_21/app/modules/card_table/domain/usecases/calculate_score/calculate_score.dart'
@@ -20,12 +20,9 @@ import 'package:black_jack_21/app/modules/card_table/domain/usecases/shuffle_car
     as _i9;
 import 'package:black_jack_21/app/modules/card_table/domain/usecases/validate_win/validate_win.dart'
     as _i11;
+import 'package:black_jack_21/app/modules/card_table/infra/infra.dart' as _i21;
 import 'package:black_jack_21/app/modules/card_table/infra/models/card_model.dart'
     as _i20;
-import 'package:black_jack_21/app/modules/card_table/infra/models/deck_model.dart'
-    as _i21;
-import 'package:black_jack_21/app/modules/card_table/infra/repository.dart'
-    as _i23;
 import 'package:black_jack_21/app/modules/card_table/presentation/cubit/card_table_cubit.dart'
     as _i17;
 import 'package:black_jack_21/app/modules/card_table/presentation/cubit/card_table_state.dart'
@@ -1237,7 +1234,7 @@ class MockCalculateScore extends _i1.Mock implements _i10.CalculateScore {
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockCardTableRepository extends _i1.Mock
-    implements _i23.CardTableRepository {
+    implements _i21.CardTableRepository {
   MockCardTableRepository() {
     _i1.throwOnMissingStub(this);
   }
@@ -1316,7 +1313,7 @@ class MockCardTableRepository extends _i1.Mock
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockCardTableRemoteDatasource extends _i1.Mock
-    implements _i24.CardTableRemoteDatasource {
+    implements _i23.CardTableRemoteDatasource {
   MockCardTableRemoteDatasource() {
     _i1.throwOnMissingStub(this);
   }
