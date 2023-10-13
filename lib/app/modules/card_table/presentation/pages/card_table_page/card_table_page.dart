@@ -1,12 +1,7 @@
 import 'dart:ui';
-import 'package:black_jack_21/app/modules/card_table/infra/models/card_model.dart';
-import 'package:black_jack_21/app/modules/card_table/presentation/cubit/card_table_cubit.dart';
-import 'package:black_jack_21/app/modules/card_table/presentation/cubit/card_table_state.dart';
-import 'package:black_jack_21/app/modules/card_table/presentation/widgets/buy_card_button.dart';
-import 'package:black_jack_21/app/modules/card_table/presentation/widgets/card_hand.dart';
-import 'package:black_jack_21/app/modules/card_table/presentation/widgets/reshuffle_cards_button.dart';
-import 'package:black_jack_21/app/modules/card_table/presentation/widgets/score_label.dart';
-import 'package:black_jack_21/app/modules/card_table/presentation/widgets/show_result_modal.dart';
+import 'package:black_jack_21/app/modules/card_table/presentation/cubit/cubit.dart';
+import 'package:black_jack_21/app/modules/card_table/presentation/pages/card_table_page/card_table_mixin.dart';
+import 'package:black_jack_21/app/modules/card_table/presentation/widgets/widgets.dart';
 // ignore: library_prefixes
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,15 +14,7 @@ class CardTablePage extends StatefulWidget {
   State<CardTablePage> createState() => _CardTablePageState();
 }
 
-class _CardTablePageState extends State<CardTablePage> {
-  List<Cards> cardListCpu = [];
-  List<Cards> cardListUser = [];
-
-  int cpuScore = 0;
-  int userScore = 0;
-
-  bool gameIsFinished = false;
-
+class _CardTablePageState extends State<CardTablePage> with CardTableMixin {
   @override
   void initState() {
     widget.cardTableCubit.fetchShuffleCards(deckCount: "6");
@@ -39,6 +26,13 @@ class _CardTablePageState extends State<CardTablePage> {
     return BlocConsumer<CardTableCubit, CardTableState>(
         bloc: widget.cardTableCubit,
         listener: (context, state) async {
+          if (state is CardTableErrorState) {
+            showErrorModal(
+              context,
+              text: state.failure.message ?? "",
+            );
+          }
+
           if (state is DrawCardSuccessState) {
             cardListUser.add(state.cardModel.cards![0]);
             cardListCpu.add(state.cardModel.cards![1]);
@@ -47,6 +41,7 @@ class _CardTablePageState extends State<CardTablePage> {
             cpuScore = widget.cardTableCubit.calculateScore(cards: cardListCpu);
             var result = widget.cardTableCubit
                 .validateWin(cpuScore: cpuScore, userScore: userScore);
+
             if (result != null) {
               showResultModal(context, text: result.value, callback: () async {
                 setState(() {
@@ -89,6 +84,7 @@ class _CardTablePageState extends State<CardTablePage> {
                 decoration: BoxDecoration(color: Colors.white.withOpacity(0.0)),
                 child: state is DrawCardSuccessState
                     ? Column(
+                        key: const Key("CardTableColumn"),
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           CardHand(cardsList: cardListCpu),

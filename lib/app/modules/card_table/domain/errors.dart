@@ -13,6 +13,7 @@ class CardTableRequestError implements CardTableFailure {
   final dynamic data;
   CardTableRequestError({this.message, this.code, this.data});
 }
+
 class CardTableUnkownError implements CardTableFailure {
   @override
   final String? message;

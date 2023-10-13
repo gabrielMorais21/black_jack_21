@@ -1,10 +1,10 @@
 import 'package:black_jack_21/app/common/routes.dart';
 import 'package:black_jack_21/app/core/mock/card_table_mock.dart';
-import 'package:black_jack_21/app/modules/card_table/data/remote/remote_datasource_imp.dart';
-import 'package:black_jack_21/app/modules/card_table/domain/errors.dart';
-import 'package:flutter_test/flutter_test.dart';
+import 'package:black_jack_21/app/modules/card_table/data/data.dart';
 
+import 'package:black_jack_21/app/modules/card_table/domain/errors.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import '../../../../../mock/mock.mocks.dart';
 // ignore: library_prefixes
@@ -28,11 +28,16 @@ void main() {
           data: cardTableMock.shuffleTheCardsSuccess(),
           statusCode: 200));
 
-      CardTableRemoteDatasourceImp cardTableRemoteDatasourceImp = CardTableRemoteDatasourceImp(httpclient: injectionContainer.sl());
-      final result = await cardTableRemoteDatasourceImp.getShuffleCards(deckCount: "6");
+      CardTableRemoteDatasourceImp cardTableRemoteDatasourceImp =
+          CardTableRemoteDatasourceImp(httpclient: injectionContainer.sl());
+      final result =
+          await cardTableRemoteDatasourceImp.getShuffleCards(deckCount: "6");
 
       expect(result.isRight(), true);
-      result.fold((l) => null, (Map<String, dynamic> map) => expect(map, isA<Map<String, dynamic>>()));
+      result.fold(
+          (l) => null,
+          (Map<String, dynamic> map) =>
+              expect(map, isA<Map<String, dynamic>>()));
     });
 
     test("should return an object of type CardTableRequestError", () async {
@@ -44,8 +49,10 @@ void main() {
           data: cardTableMock.shuffleTheCardsFail(),
           statusCode: 200));
 
-      CardTableRemoteDatasourceImp cardTableRemoteDatasourceImp = CardTableRemoteDatasourceImp(httpclient: injectionContainer.sl());
-      final result = await cardTableRemoteDatasourceImp.getShuffleCards(deckCount: "6");
+      CardTableRemoteDatasourceImp cardTableRemoteDatasourceImp =
+          CardTableRemoteDatasourceImp(httpclient: injectionContainer.sl());
+      final result =
+          await cardTableRemoteDatasourceImp.getShuffleCards(deckCount: "6");
       expect(result.isLeft(), true);
       result.fold((l) {
         expect(l, isA<CardTableRequestError>());
@@ -56,7 +63,8 @@ void main() {
 
   group("datasource getReshuffleCards", () {
     test("should return an Map", () async {
-      var url = ApiRoutes.getReshuffleCards.replaceAll("<<deck_id>>", "3p40paa87x90");
+      var url =
+          ApiRoutes.getReshuffleCards.replaceAll("<<deck_id>>", "3p40paa87x90");
       when(mockDio.get(url)).thenAnswer((_) async => Response(
           requestOptions: RequestOptions(
             path: url,
@@ -64,15 +72,21 @@ void main() {
           data: cardTableMock.reshuffleTheCardsSuccess(),
           statusCode: 200));
 
-      CardTableRemoteDatasourceImp cardTableRemoteDatasourceImp = CardTableRemoteDatasourceImp(httpclient: injectionContainer.sl());
-      final result = await cardTableRemoteDatasourceImp.getReshuffleCards(deckId: "3p40paa87x90");
+      CardTableRemoteDatasourceImp cardTableRemoteDatasourceImp =
+          CardTableRemoteDatasourceImp(httpclient: injectionContainer.sl());
+      final result = await cardTableRemoteDatasourceImp.getReshuffleCards(
+          deckId: "3p40paa87x90");
 
       expect(result.isRight(), true);
-      result.fold((l) => null, (Map<String, dynamic> map) => expect(map, isA<Map<String, dynamic>>()));
+      result.fold(
+          (l) => null,
+          (Map<String, dynamic> map) =>
+              expect(map, isA<Map<String, dynamic>>()));
     });
 
     test("should return an object of type CardTableRequestError", () async {
-      var url = ApiRoutes.getReshuffleCards.replaceAll("<<deck_id>>", "3p40paa87x90");
+      var url =
+          ApiRoutes.getReshuffleCards.replaceAll("<<deck_id>>", "3p40paa87x90");
       when(mockDio.get(url)).thenAnswer((_) async => Response(
           requestOptions: RequestOptions(
             path: url,
@@ -80,8 +94,10 @@ void main() {
           data: cardTableMock.reshuffleTheCardsFail(),
           statusCode: 200));
 
-      CardTableRemoteDatasourceImp cardTableRemoteDatasourceImp = CardTableRemoteDatasourceImp(httpclient: injectionContainer.sl());
-      final result = await cardTableRemoteDatasourceImp.getReshuffleCards(deckId: "3p40paa87x90");
+      CardTableRemoteDatasourceImp cardTableRemoteDatasourceImp =
+          CardTableRemoteDatasourceImp(httpclient: injectionContainer.sl());
+      final result = await cardTableRemoteDatasourceImp.getReshuffleCards(
+          deckId: "3p40paa87x90");
       expect(result.isLeft(), true);
       result.fold((l) {
         expect(l, isA<CardTableRequestError>());
@@ -101,11 +117,16 @@ void main() {
           data: cardTableMock.drawCardSuccess(),
           statusCode: 200));
 
-      CardTableRemoteDatasourceImp cardTableRemoteDatasourceImp = CardTableRemoteDatasourceImp(httpclient: injectionContainer.sl());
-      final result = await cardTableRemoteDatasourceImp.getDrawCard(deckId: "3p40paa87x90", count: "2");
+      CardTableRemoteDatasourceImp cardTableRemoteDatasourceImp =
+          CardTableRemoteDatasourceImp(httpclient: injectionContainer.sl());
+      final result = await cardTableRemoteDatasourceImp.getDrawCard(
+          deckId: "3p40paa87x90", count: "2");
 
       expect(result.isRight(), true);
-      result.fold((l) => null, (Map<String, dynamic> map) => expect(map, isA<Map<String, dynamic>>()));
+      result.fold(
+          (l) => null,
+          (Map<String, dynamic> map) =>
+              expect(map, isA<Map<String, dynamic>>()));
     });
 
     test("should return an object of type CardTableRequestError", () async {
@@ -118,8 +139,10 @@ void main() {
           data: cardTableMock.drawCardFail(),
           statusCode: 200));
 
-      CardTableRemoteDatasourceImp cardTableRemoteDatasourceImp = CardTableRemoteDatasourceImp(httpclient: injectionContainer.sl());
-      final result = await cardTableRemoteDatasourceImp.getDrawCard(deckId: "3p40paa87x90", count: "2");
+      CardTableRemoteDatasourceImp cardTableRemoteDatasourceImp =
+          CardTableRemoteDatasourceImp(httpclient: injectionContainer.sl());
+      final result = await cardTableRemoteDatasourceImp.getDrawCard(
+          deckId: "3p40paa87x90", count: "2");
       expect(result.isLeft(), true);
       result.fold((l) {
         expect(l, isA<CardTableRequestError>());

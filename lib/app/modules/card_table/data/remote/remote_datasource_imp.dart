@@ -1,5 +1,6 @@
 import 'package:black_jack_21/app/common/routes.dart';
-import 'package:black_jack_21/app/modules/card_table/data/remote/remote_datasource.dart';
+import 'package:black_jack_21/app/modules/card_table/data/data.dart';
+
 import 'package:black_jack_21/app/modules/card_table/domain/errors.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';

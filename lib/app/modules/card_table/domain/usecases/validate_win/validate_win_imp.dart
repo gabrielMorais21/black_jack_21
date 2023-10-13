@@ -1,10 +1,10 @@
 import 'package:black_jack_21/app/common/enums/game_results_enum.dart';
-import 'package:black_jack_21/app/modules/card_table/domain/usecases/validate_win/validate_win.dart';
+import 'package:black_jack_21/app/modules/card_table/domain/domain.dart';
 
- class ValidateWinImp implements ValidateWin {
+class ValidateWinImp implements ValidateWin {
   @override
-  GameResults? call({required int userScore, required int cpuScore}){
-        if (userScore > 21 && cpuScore > 21) {
+  GameResults? call({required int userScore, required int cpuScore}) {
+    if (userScore > 21 && cpuScore > 21) {
       return GameResults.draw;
     } else if (userScore == 21 && cpuScore == 21) {
       return GameResults.draw;

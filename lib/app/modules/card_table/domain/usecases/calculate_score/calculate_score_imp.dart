@@ -1,6 +1,6 @@
 import 'package:black_jack_21/app/common/helpers/verify_double.dart';
-import 'package:black_jack_21/app/modules/card_table/domain/usecases/calculate_score/calculate_score.dart';
-import 'package:black_jack_21/app/modules/card_table/infra/models/card_model.dart';
+import 'package:black_jack_21/app/modules/card_table/domain/domain.dart';
+import 'package:black_jack_21/app/modules/card_table/infra/infra.dart';
 
 class CalculateScoreImp implements CalculateScore {
   @override

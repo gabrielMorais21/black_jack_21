@@ -1,17 +1,11 @@
 import 'package:black_jack_21/app/core/mock/card_table_mock.dart';
-import 'package:black_jack_21/app/modules/card_table/domain/usecases/calculate_score/calculate_score.dart';
-import 'package:black_jack_21/app/modules/card_table/domain/usecases/draw_card/draw_card.dart';
-import 'package:black_jack_21/app/modules/card_table/domain/usecases/reshuffle_cards/reshuffle_cards.dart';
-import 'package:black_jack_21/app/modules/card_table/domain/usecases/shuffle_cards/shuffle_cards.dart';
-import 'package:black_jack_21/app/modules/card_table/domain/usecases/validate_win/validate_win.dart';
-import 'package:black_jack_21/app/modules/card_table/infra/models/card_model.dart';
-import 'package:black_jack_21/app/modules/card_table/infra/models/deck_model.dart';
-import 'package:black_jack_21/app/modules/card_table/presentation/cubit/card_table_cubit.dart';
-import 'package:black_jack_21/app/modules/card_table/presentation/cubit/card_table_state.dart';
+import 'package:black_jack_21/app/modules/card_table/presentation/cubit/cubit.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+import 'package:black_jack_21/app/modules/card_table/domain/domain.dart';
+import 'package:black_jack_21/app/modules/card_table/infra/infra.dart';
 
 import '../../../../../mock/mock.mocks.dart';
 // ignore: library_prefixes
@@ -36,7 +30,9 @@ void main() {
   blocTest(
     "should make a successful request and return the following states[CardTableLoadingState(), DrawCardSuccessState()]",
     setUp: () {
-      when(mockDrawCard(count: "2", deckId: "3p40paa87x90")).thenAnswer((_) async => right(CardModel.fromJson(cardTableMock.drawCardSuccess())));
+      when(mockDrawCard(count: "2", deckId: "3p40paa87x90")).thenAnswer(
+          (_) async =>
+              right(CardModel.fromJson(cardTableMock.drawCardSuccess())));
     },
     build: () => CardTableCubit(
       drawCard: injectionContainer.sl(),
@@ -56,7 +52,8 @@ void main() {
   blocTest(
     "should make a successful request and return the following states[CardTableLoadingState(), ShuffleCardsSuccessState()]",
     setUp: () {
-      when(mockShuffleCards(deckCount: "6")).thenAnswer((_) async => right(DeckModel.fromJson(cardTableMock.shuffleTheCardsSuccess())));
+      when(mockShuffleCards(deckCount: "6")).thenAnswer((_) async =>
+          right(DeckModel.fromJson(cardTableMock.shuffleTheCardsSuccess())));
     },
     build: () => CardTableCubit(
       drawCard: injectionContainer.sl(),
@@ -76,7 +73,8 @@ void main() {
   blocTest(
     "should make a successful request and return the following states[CardTableLoadingState(), ReshuffleCardsSuccessState()]",
     setUp: () {
-      when(mockReshuffleCards(deckId: "3p40paa87x90")).thenAnswer((_) async => right(DeckModel.fromJson(cardTableMock.reshuffleTheCardsSuccess())));
+      when(mockReshuffleCards(deckId: "3p40paa87x90")).thenAnswer((_) async =>
+          right(DeckModel.fromJson(cardTableMock.reshuffleTheCardsSuccess())));
     },
     build: () => CardTableCubit(
       drawCard: injectionContainer.sl(),

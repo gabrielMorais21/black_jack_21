@@ -1,15 +1,7 @@
+import 'dart:ui';
+
 import 'package:black_jack_21/app/common/enums/game_results_enum.dart';
 import 'package:black_jack_21/app/core/mock/card_table_mock.dart';
-import 'package:black_jack_21/app/modules/card_table/domain/usecases/calculate_score/calculate_score.dart';
-import 'package:black_jack_21/app/modules/card_table/domain/usecases/draw_card/draw_card.dart';
-import 'package:black_jack_21/app/modules/card_table/domain/usecases/reshuffle_cards/reshuffle_cards.dart';
-import 'package:black_jack_21/app/modules/card_table/domain/usecases/shuffle_cards/shuffle_cards.dart';
-import 'package:black_jack_21/app/modules/card_table/domain/usecases/validate_win/validate_win.dart';
-import 'package:black_jack_21/app/modules/card_table/infra/models/card_model.dart';
-import 'package:black_jack_21/app/modules/card_table/infra/models/deck_model.dart';
-import 'package:black_jack_21/app/modules/card_table/presentation/cubit/card_table_cubit.dart';
-import 'package:black_jack_21/app/modules/card_table/presentation/cubit/card_table_state.dart';
-import 'package:black_jack_21/app/modules/card_table/presentation/pages/card_table_page/card_table_page.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +11,10 @@ import 'package:black_jack_21/injection_container.dart' as injectionContainer;
 import 'package:mockito/mockito.dart';
 import 'package:network_image_mock/network_image_mock.dart';
 import '../../../../../../mock/mock.mocks.dart';
+
+import 'package:black_jack_21/app/modules/card_table/domain/domain.dart';
+import 'package:black_jack_21/app/modules/card_table/infra/infra.dart';
+import 'package:black_jack_21/app/modules/card_table/presentation/presentation.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -79,7 +75,7 @@ void main() {
   });
 
   testWidgets(
-    'Scaffold',
+    'Should validate Scaffold and its attributes',
     (WidgetTester tester) async {
       mockNetworkImagesFor(() async {
         await tester.pumpWidget(app);
@@ -95,7 +91,7 @@ void main() {
   );
 
   testWidgets(
-    'Scaffold',
+    'Should validate backgroundContainer and its attributes',
     (WidgetTester tester) async {
       mockNetworkImagesFor(() async {
         await tester.pumpWidget(app);
@@ -106,7 +102,54 @@ void main() {
         expect(backgroundContainerFind, findsOneWidget);
         Container container = tester.firstWidget(backgroundContainerFind);
 
-        // expect(container.body, isA<Container>());
+        expect(container.decoration, isA<BoxDecoration>());
+
+        BoxDecoration boxDecoration = container.decoration as BoxDecoration;
+
+        expect(boxDecoration.image, isA<DecorationImage>());
+
+        DecorationImage decorationImage = boxDecoration.image!;
+
+        expect(decorationImage.fit, BoxFit.cover);
+        expect(
+            decorationImage.image, const AssetImage('assets/background.jpg'));
+      });
+    },
+  );
+
+  testWidgets(
+    'Should validate BackdropFilter and its attribute',
+    (WidgetTester tester) async {
+      mockNetworkImagesFor(() async {
+        await tester.pumpWidget(app);
+        await tester.pumpAndSettle();
+
+        var backdropFilterFind = find.byType(BackdropFilter);
+        expect(backdropFilterFind, findsOneWidget);
+        BackdropFilter backdropFilter = tester.firstWidget(backdropFilterFind);
+
+        expect(
+            backdropFilter.filter, ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0));
+      });
+    },
+  );
+
+  testWidgets(
+    'Should validate CardTableColumn and its attribute',
+    (WidgetTester tester) async {
+      mockNetworkImagesFor(() async {
+        await tester.pumpWidget(app);
+        await tester.pumpAndSettle();
+
+        var columnFind = find.byKey(const Key("CardTableColumn"));
+        expect(columnFind, findsOneWidget);
+        Column column = tester.firstWidget(columnFind);
+
+        expect(column.children[0], isA<CardHand>());
+        expect(column.children[1], isA<ScoreLabel>());
+        expect(column.children[2], isA<BuyCardButton>());
+        expect(column.children[3], isA<ScoreLabel>());
+        expect(column.children[4], isA<CardHand>());
       });
     },
   );

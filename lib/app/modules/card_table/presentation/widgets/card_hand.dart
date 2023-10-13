@@ -9,8 +9,11 @@ class CardHand extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
+    final screenWidth = mediaQuery.size.width;
+
     return SizedBox(
-      width: 400.w,
+      width: screenWidth < 600 ? double.infinity : 400.w,
       height: 314.h,
       child: Row(children: [
         cardsList.length <= 2
@@ -37,7 +40,7 @@ class CardHand extends StatelessWidget {
                     );
                   },
                   itemCount: cardsList.length,
-                  itemWidth: 180.0.w,
+                  itemWidth: screenWidth < 600 ? 800.w : 180.w,
                   itemHeight: 314.h,
                   layout: SwiperLayout.STACK,
                 ),
